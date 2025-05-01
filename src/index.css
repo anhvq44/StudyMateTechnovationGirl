@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+body{
+    background-color: #FFFDF9
+}
+
+@theme{
+    --color-primary-light: #ffedb9; /*Light orange-yellow colour*/
+    --color-primary:#FFD9A0;
+    --color-primary-dark: #e3b56f;  /*Dark orange-yellow colour*/
+    --color-primary-dark-blue: #272969;
+    --color-input-bg: rgba(176, 186, 195, 0.4);
+    --color-primary-bright-orange: #fbb751,
+}
+
+.clip-custom{
+    clip-path: ellipse(100% 100% at 50% 0%);
+}
+
+/* === AUTHENTICATION === */
+@layer base {
+    html {
+      font-family: "Poppins", system-ui, sans-serif;
+    }
+}
+  
+@layer components {
+    .auth-container {
+        @apply flex min-h-screen flex-col md:flex-row;
+    }
+  
+    .auth-content {
+        @apply w-full md:w-1/2 flex flex-col justify-center items-center p-6;
+    }
+  
+    .auth-form-container {
+        @apply w-full max-w-[490px];
+    }
+  
+    .auth-image-container {
+        @apply hidden md:flex w-full md:w-1/2 bg-primary items-center justify-center min-h-[300px];
+    }
+  
+    .auth-title {
+        @apply text-xl md:text-2xl font-medium mb-5;
+    }
+  
+    .auth-input {
+        @apply w-full h-12 px-5 rounded-[15px] border border-transparent
+           bg-[rgba(176,186,195,0.4)] hover:bg-[rgba(176,186,195,0.5)]
+           focus:bg-white focus:border-gray-500 focus:text-black focus:border-[1.5px]
+           transition-all duration-200 outline-none;
+    }
+  
+    .auth-select {
+        @apply w-full h-[50px] px-5 rounded-[15px] bg-[rgba(176,186,195,0.4)] hover:bg-[rgba(176,186,195,0.5)]
+        focus:bg-white focus:border-gray-500 focus:text-black focus:border-[1.5px]
+        transition-all duration-200 outline-none;
+    }
+  
+    .auth-button {
+        @apply w-full h-[50px] bg-primary-light rounded-[15px] font-normal mt-2.5 
+             hover:bg-white hover:border-primary-light hover:border-[3px] transition-all cursor-pointer;
+    }
+  
+    .auth-divider {
+        @apply text-[#B0BAC3] text-center mt-9 mb-6;
+    }
+  
+    .auth-link {
+        @apply text-primary-dark font-medium no-underline hover:text-primary transition-colors;
+    }
+}
+  
+input:focus, select:focus {
+    @apply bg-white text-black outline-none;
+}
+  
+input::placeholder {
+    @apply text-black/50;
+}
