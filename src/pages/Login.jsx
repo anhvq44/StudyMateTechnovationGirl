@@ -35,7 +35,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    signInWithEmail()
+    await signInWithEmail()
 
     const today = new Date().toISOString().split("T")[0]; 
 

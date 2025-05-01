@@ -2,7 +2,6 @@ import { supabase } from "../supabase_config";
 import { analyzeMood } from "../services/MoodDetectionApi";
 
 export const sendMessage = async (message, fullMessages = []) => {
-    console.log(fullMessages)
     const messageMood = await analyzeMood(message.text)
     const contextMessage = {
         id: '1',
@@ -31,7 +30,7 @@ export const sendMessage = async (message, fullMessages = []) => {
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error.message);
+    if (!response.ok) console.log(data.error.message);
     const apiResponseText = data.choices[0].message.content.trim();
     return apiResponseText
 };
