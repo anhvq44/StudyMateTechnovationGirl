@@ -8,9 +8,11 @@ import AddTaskForm from "../components/AddTaskForm";
 import AddGoalForm from "../components/AddGoalForm";
 import { supabase } from "../supabase_config";
 import { useUser } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function ToDoPage() {
     const user = useUser()
+    const navigate = useNavigate()
 
     // Loading
     const [loading, setLoading] = useState(true);
@@ -131,7 +133,7 @@ function ToDoPage() {
     const actionsButtonItems = [
         { icon: CalendarPlus, text: "Add new task", action: AddNewTask },
         { icon: Trophy, text: "Create new goal", action: (e) => setIsOverlayOpen(true) },
-        { icon: BotMessageSquare, text: "Ask for advice", action: null }
+        { icon: BotMessageSquare, text: "Ask for advice", action: (e) => navigate('/chatbot') }
     ]
 
     // Render task grouped by goals
