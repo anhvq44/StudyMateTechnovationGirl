@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Plus, Icon, X } from 'lucide-react';
 import { useUser } from "../context/UserContext";
 
-function AddTaskForm({closeOverlay, insertToCurrentList}) {
+function AddTaskForm({ closeOverlay, insertToCurrentList }) {
     const user = useUser()
 
     // Selected goal or general of the task
@@ -50,14 +50,14 @@ function AddTaskForm({closeOverlay, insertToCurrentList}) {
             }
         };
 
-        const fetchGoals = async() => {
-            const {data, error} = await supabase
-            .from("goals")
-            .select("*")
-            if(error){
+        const fetchGoals = async () => {
+            const { data, error } = await supabase
+                .from("goals")
+                .select("*")
+            if (error) {
                 console.log("Error:", error.message, error.code, error.details)
             }
-            else{
+            else {
                 setGoalsList(data)
             }
         }
@@ -77,11 +77,12 @@ function AddTaskForm({closeOverlay, insertToCurrentList}) {
             category_id: selectedCategory ? selectedCategory : null,
             due_date: selectedDate ? selectedDate : null,
             goal_id: selectedGoal === "general" ? null : selectedGoal,
+
         };
 
 
         // Finishoff the taskinfo form
-        setTaskInfoForm(updatedTaskInfo)
+        await setTaskInfoForm(updatedTaskInfo)
 
         // Insert row to table
         const { data, error } = await supabase
@@ -89,10 +90,19 @@ function AddTaskForm({closeOverlay, insertToCurrentList}) {
             .insert([updatedTaskInfo])
             .select()
         if (error) {
-            console.log( error.message, error.details, error.hint);
+            console.log(error.message, error.details, error.hint);
         }
-        else if(!error && data){
-            insertToCurrentList(data)
+        else if (!error && data) {
+            const insertedTask = data[0]
+            const matchedGoal = insertedTask.goal_id
+                ? goalsList.find(goal => goal.id === insertedTask.goal_id)
+                : null;
+
+            const taskWithGoal = {
+                ...insertedTask,
+                goals: matchedGoal || {}
+            };
+            await insertToCurrentList([taskWithGoal])
         }
 
         closeOverlay()
@@ -159,7 +169,7 @@ function AddTaskForm({closeOverlay, insertToCurrentList}) {
                 <select
                     id="goal_id"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#2F327D] focus:ring-[#2F327D] bg-gray-50 p-2 pr-8"
-                    onChange={(e) => {setSelectedGoal(e.target.value)}}
+                    onChange={(e) => { setSelectedGoal(e.target.value) }}
                     value={selectedGoal}
                     required
                 >

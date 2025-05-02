@@ -98,8 +98,8 @@ function ToDoPage() {
     }, []);
 
     // Insert new task to current task list
-    const handleInsertTask = (data) => {
-        setTaskList(prevTasks => [...prevTasks, ...data]);
+    const handleInsertTask = async (data) => {
+        await setTaskList(prevTasks => [...prevTasks, ...data]);
     }
 
     // Save toggling
@@ -141,6 +141,7 @@ function ToDoPage() {
         const groupedTasks = taskList.reduce((acc, task) => {
             if (task.goal_id) {
                 if (!acc[task.goal_id]) {
+                    console.log(task)
                     acc[task.goal_id] = {
                         goal_name: task.goals.goal_name,
                         tasks: []
