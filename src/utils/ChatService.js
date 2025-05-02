@@ -58,8 +58,8 @@ export const generateSystemPrompt = async () => {
     const { data: tasks, error: taskError } = await supabase
         .from('tasks')
         .select('*')
-        .eq('due_date', today)
-        .maybeSingle();
+        .eq('deleted', false)
+        .eq('completed', false)
     if (taskError) {
         console.log(taskError.message)
     }
@@ -70,8 +70,8 @@ export const generateSystemPrompt = async () => {
     const highlightNote = checkin.highlight_note ? `This is the user's highlight note: ${checkin.highlight_note}.` : ``;
     const gratefulNote = checkin.grateful_note ? `This is the user's grateful note: ${checkin.gratefulNote}` : ``;
     const taskList = tasks?.length
-        ? tasks.map((task) => `- ${task.task_name} (due ${task.due_date})`).join('\n')
-        : 'No tasks today.';
+        ? tasks.map((task) => `- ${task.task_name} (due ${task?.due_date})`).join('\n')
+        : 'No uncompleted task.';
 
     return `
         You are a friendly, supportive chatbot who helps students with their mental health and productivity.
@@ -79,9 +79,10 @@ export const generateSystemPrompt = async () => {
         ${gratefulNote}
         ${qualityString}
         ${moodString}
-        Their due tasks for today are:
+        Their uncompleted tasks are:
         ${taskList}
 
+        For them, today is: ${today}
         Keep responses casual, warm, not too long, and helpful. If the user seems stressed or sad, be empathetic and give gentle suggestions.
     `.trim();
 };
